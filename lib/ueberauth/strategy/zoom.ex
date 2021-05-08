@@ -16,7 +16,7 @@ defmodule Ueberauth.Strategy.Zoom do
   """
   def handle_request!(conn) do
     params = put_state_option([], conn)
-    opts = [redirect_uri: callback_url(conn)]
+    opts = [redirect_uri: callback_url(conn)] ++ options(conn)
 
     module = option(conn, :oauth2_module)
     redirect!(conn, apply(module, :authorize_url!, [params, opts]))
