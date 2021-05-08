@@ -34,7 +34,7 @@ defmodule Ueberauth.Strategy.Zoom do
   def handle_callback!(%Plug.Conn{params: %{"code" => code}} = conn) do
     params = [code: code]
     module = option(conn, :oauth2_module)
-    opts = [redirect_uri: callback_url(conn)]
+    opts = [redirect_uri: callback_url(conn)] ++ options(conn)
 
     case apply(module, :get_token, [params, opts]) do
       {:ok, %{token: %OAuth2.AccessToken{} = token}} ->
