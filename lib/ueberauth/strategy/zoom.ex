@@ -15,18 +15,12 @@ defmodule Ueberauth.Strategy.Zoom do
   You can also include a `state` param that Zoom will return to you.
   """
   def handle_request!(conn) do
-    params = put_state_option([], conn)
+    params = with_state_param([], conn)
     opts = [redirect_uri: callback_url(conn)] ++ options(conn)
 
     module = option(conn, :oauth2_module)
     redirect!(conn, apply(module, :authorize_url!, [params, opts]))
   end
-
-  defp put_state_option(opts, %{params: %{"state" => state}}) do
-    Keyword.put(opts, :state, state)
-  end
-
-  defp put_state_option(opts, _), do: opts
 
   @doc """
   Handles the callback from Zoom.
